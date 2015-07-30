@@ -118,8 +118,8 @@ $(function() {
     if($(this).hasClass('selected')) {
 
     } else {
-    $('.selected').toggleClass("selected").children(".description").slideToggle(250);
-    $(this).toggleClass("selected").children(".description").slideToggle(250);
+    $('.selected').toggleClass("selected").children(".description, .title").slideToggle(250);
+    $(this).toggleClass("selected").children(".description, .title").slideToggle(250);
     // $grid.masonry( 'unstamp', $('.pin') );
     // $grid.masonry( 'stamp', $(this) );
     $grid.masonry('layout');
