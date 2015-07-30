@@ -3,7 +3,6 @@ $(function() {
   var $content = $("#content");
   var currentBoardID;
   var boardsListData;
-  var boardData;
   
   var $grid = $('.corkboard').masonry({
     itemSelector: '.pin',
@@ -23,7 +22,7 @@ $(function() {
           )
         });
         currentBoardID = boardsListData[0].id;
-        loadBoard(boardsListData[0].id);
+        loadBoard(currentBoardID);
         populateNewPinForm();
       },
       "json"
@@ -45,7 +44,7 @@ $(function() {
       '/boards/'+id,
       function(data) {
         $(".corkboard").empty();
-        boardData = data;
+        var boardData = data;
         boardData.forEach(function(pin) {
           newPin(pin);
         });
@@ -58,35 +57,18 @@ $(function() {
     );
   }
 
-  $.fn.editable.defaults.mode = 'inline';
-  $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
 
   function newPin(pin) {
     var $newPin = $("<div class='pin'>");
     $newPin.css("background-image", "url(" + pin.url + ")");
     $newPin.append($("<h3 class='title'>")
       .text(pin.name)
-      .editable({
-        type: 'text',
-        pk: pin.id,
-        url: '/pins',
-        name: 'description',
-        showbuttons: false,
-        emptytext: 'Click here to add a description',
-        success: function() { console.log(status);}
-      })
+      .attr('contenteditable', true)
     );
     $newPin.append($("<div class='description'>")
       .append($("<p>")
         .text(pin.description)
-        .editable({
-          type: 'textarea',
-          pk: pin.id,
-          url: '/pins',
-          name: 'description',
-          emptytext: 'Click here to add a description',
-          success: function() { console.log(status);}
-        })
+        .attr('contenteditable', true)
       )
     );
     $grid.prepend($newPin).masonry( 'prepended', $newPin );
