@@ -7,7 +7,7 @@ $(function() {
   
   var $grid = $('.corkboard').masonry({
     itemSelector: '.pin',
-    columnWidth: 270
+    columnWidth: 260
   });
 
   function getBoards() {
@@ -58,11 +58,37 @@ $(function() {
     );
   }
 
+  $.fn.editable.defaults.mode = 'inline';
+  $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
+
   function newPin(pin) {
-    var $newPin = $("<div class='pin pin-default'>");
+    var $newPin = $("<div class='pin'>");
     $newPin.css("background-image", "url(" + pin.url + ")");
-    $newPin.append($("<h3 class='title'>").text(pin.name));
-    $newPin.append($("<p class='description'>").text(pin.description));
+    $newPin.append($("<h3 class='title'>")
+      .text(pin.name)
+      .editable({
+        type: 'text',
+        pk: pin.id,
+        url: '/pins',
+        name: 'description',
+        showbuttons: false,
+        emptytext: 'Click here to add a description',
+        success: function() { console.log(status);}
+      })
+    );
+    $newPin.append($("<div class='description'>")
+      .append($("<p>")
+        .text(pin.description)
+        .editable({
+          type: 'textarea',
+          pk: pin.id,
+          url: '/pins',
+          name: 'description',
+          emptytext: 'Click here to add a description',
+          success: function() { console.log(status);}
+        })
+      )
+    );
     $grid.prepend($newPin).masonry( 'prepended', $newPin );
   }
 
@@ -88,14 +114,15 @@ $(function() {
     );
   })
 
-  $content.on('click', '.pin.pin-default', function(e) {
+  $content.on('click', '.pin', function(e) {
     if($(this).hasClass('selected')) {
 
     } else {
-    $('.selected').toggleClass("selected");
-    $(this).toggleClass("selected");
-    $grid.masonry();
-    console.log("it completed");
+    $('.selected').toggleClass("selected").children(".description").slideToggle(250);
+    $(this).toggleClass("selected").children(".description").slideToggle(250);
+    // $grid.masonry( 'unstamp', $('.pin') );
+    // $grid.masonry( 'stamp', $(this) );
+    $grid.masonry('layout');
     }
   })
 
