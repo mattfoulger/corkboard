@@ -1,1 +1,87 @@
-<h1>Home Page</h1>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand">Corkboard</a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Boards<span class="caret"></span></a>
+          <ul id="boards-dropdown" class="dropdown-menu">
+            <li><a href="#" data-toggle="modal" data-target="#newBoardModal">New Board</a></li>
+            <li role="separator" class="divider"></li>
+            <!-- js will fill with boards -->
+          </ul>
+        </li>
+        <li><a href="#" data-toggle="modal" data-target="#newPinModal">New Pin</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container">
+  <div class="row">
+    <div id="content" class="col-md-12">
+      <div class="corkboard">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="newPinModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="newPinModalLabel">Add pin</h4>
+      </div>
+      <form id="newPinForm" method="post" action="/pins">
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Board:</label>
+          <select class="form-control" name="board_id">
+            <!-- populated by js -->
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Title:</label>
+          <input class="form-control" type="text" name="name" value="">
+        </div>
+        <div class="form-group" >
+          <label>Description:</label>
+          <input class="form-control" type="text" name="description" value="">
+        </div>
+        <div class="form-group" >
+          <label>URL:</label>
+          <input class="form-control" type="text" name="url" value="">
+        </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+          <input type="submit" value="Create pin" class="btn btn-primary"/>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="newBoardModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="newBoardModalLabel">New Note</h4>
+      </div>
+      
+    </div>
+  </div>
+</div>

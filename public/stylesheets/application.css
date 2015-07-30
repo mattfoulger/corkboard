@@ -1,0 +1,73 @@
+body {
+  padding-top: 50px;
+  /*font-family: Georgia, Times, 'Times New Roman', serif;*/
+}
+
+.boards-dropdown li {
+  padding: 5px;
+  cursor: pointer;
+}
+
+
+.corkboard:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+.pin {
+  position: relative;
+  float: left;
+  margin: 10px;
+  height: 250px;
+  width: 250px;
+  border: solid 1px #e7e7e7;
+  background-size: cover;
+  color: white;
+  text-align: center;
+}
+
+.pin.selected {
+  width: 520px;
+  height: 375px;
+}
+
+.pin .title {
+  display: block;
+  position: absolute;
+  margin: 0px;
+  top: 0%;
+  left: 0%;
+  right: 0%;
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.pin .description {
+  display: block;
+  position: absolute;
+  margin: 0px;
+  bottom: 0%;
+  left: 0%;
+  right: 0%;
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+.pin i {
+  font-size: 80px;
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.pin.add-pin {
+  background-image: url("../images/add-pin.png");
+}
+
+.pin.add-pin:active {
+  background-image: url("../images/add-pin-active.png");
+}
