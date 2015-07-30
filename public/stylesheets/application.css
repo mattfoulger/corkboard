@@ -32,70 +32,88 @@ body {
 }
 
 .pin .title {
-  display: none;
   position: absolute;
-  margin: 0px;
   top: 0%;
   left: 0%;
   right: 0%;
-  padding: 5px;
+  bottom: 100%;
   background-color: rgba(0, 0, 0, 0.4);
   text-align: center;
+  transition: all 0.7s;
+}
+
+.pin .title h3 {
+  display: none;
+  margin-top: 8px; 
+}
+
+.pin .title.viewable {
+  bottom: 85%;
+}
+
+.pin .title.viewable h3 {
+  display: block;
 }
 
 .pin .description {
-  display: none;
   position: absolute;
-  margin: 0px;
+  top: 100%;
   bottom: 0%;
   left: 0%;
   right: 0%;
-  padding: 7px 12px 7px 12px;
   background-color: rgba(0, 0, 0, 0.4);
   vertical-align: bottom;
-  max-height: 200px;
   overflow-y: auto;
   font-size: 1.2em;
+  transition: all 0.7s;
 }
 
-.pin .editable-click {
-  border: none;
+.pin .description.viewable {
+  top: 15%;
+  padding: 7px 12px 7px 12px;
 }
 
-.pin .form-control {
-  background-color: rgba(0, 0, 0, 0.2);
-  color: white;
-  vertical-align: bottom;
-  width: 400px;
+.pin .description p {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  right: 0%;
+  bottom: 20%;
+  padding: 7px;
+  overflow-y: auto;
 }
 
-.pin .editable-empty {
-  color: white;
+.pin .description .controls {
+  position: absolute;
+  top: 80%;
+  right: 0%;
+  bottom: 0%;
+  padding: 5px;
+  vertical-align: middle;
 }
 
-.pin .editable-buttons {
-  vertical-align: bottom;
+.myButton {
+  background-color:transparent;
+  border:1px solid #ffffff;
+  display:inline-block;
+  cursor:pointer;
+  color:#ffffff;
+  padding:6px 14px;
+  margin-left: 4px;
+  text-decoration:none;
+}
+.myButton:hover {
+  background-color: rgba(0, 0, 0, 0.4);
+  text-decoration:none;
+  color:#ffffff;
+}
+.myButton:active {
+  position:relative;
+  top:1px;
 }
 
-.pin .btn-group-sm>.btn, .btn-sm {
-  float: right;
-  clear: right;
-  margin: 2px;
-}
-
-.pin > i {
-  font-size: 80px;
-  position: relative;
-  top: 50%;
-  -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-
-.pin.add-pin {
-  background-image: url("../images/add-pin.png");
-}
-
-.pin.add-pin:active {
-  background-image: url("../images/add-pin-active.png");
+[contenteditable="true"]:active,
+[contenteditable="true"]:focus{
+border:none;
+outline:none;
 }

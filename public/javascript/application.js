@@ -61,14 +61,24 @@ $(function() {
   function newPin(pin) {
     var $newPin = $("<div class='pin'>");
     $newPin.css("background-image", "url(" + pin.url + ")");
-    $newPin.append($("<h3 class='title'>")
-      .text(pin.name)
-      .attr('contenteditable', true)
+    $newPin.append($("<div class='title'>")
+      .append($("<h3>")
+        .text(pin.name)
+        .attr('contenteditable', true)
+      )
     );
     $newPin.append($("<div class='description'>")
       .append($("<p>")
         .text(pin.description)
         .attr('contenteditable', true)
+      )
+      .append($("<div class='controls'>")
+        .append($("<a class='myButton'>")
+          .text("Save")
+        )
+        .append($("<a class='myButton'>")
+          .text("Cancel")
+        )
       )
     );
     $grid.prepend($newPin).masonry( 'prepended', $newPin );
@@ -100,8 +110,8 @@ $(function() {
     if($(this).hasClass('selected')) {
 
     } else {
-    $('.selected').toggleClass("selected").children(".description, .title").slideToggle(250);
-    $(this).toggleClass("selected").children(".description, .title").slideToggle(250);
+    $('.selected').toggleClass("selected").children(".description, .title").removeClass("viewable");
+    $(this).toggleClass("selected").children(".description, .title").addClass("viewable");
     // $grid.masonry( 'unstamp', $('.pin') );
     // $grid.masonry( 'stamp', $(this) );
     $grid.masonry('layout');
