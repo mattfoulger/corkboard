@@ -3,7 +3,6 @@ $(function() {
   var $content = $("#content");
   var currentBoardID;
   var boardsListData;
-  var boardData;
   
   var $grid = $('.corkboard').masonry({
     itemSelector: '.pin',
@@ -23,7 +22,7 @@ $(function() {
           )
         });
         currentBoardID = boardsListData[0].id;
-        loadBoard(boardsListData[0].id);
+        loadBoard(currentBoardID);
         populateNewPinForm();
       },
       "json"
@@ -45,7 +44,7 @@ $(function() {
       '/boards/'+id,
       function(data) {
         $(".corkboard").empty();
-        boardData = data;
+        var boardData = data;
         boardData.forEach(function(pin) {
           newPin(pin);
         });
@@ -58,35 +57,29 @@ $(function() {
     );
   }
 
-  $.fn.editable.defaults.mode = 'inline';
-  $.fn.editable.defaults.ajaxOptions = {type: "PUT"};
 
   function newPin(pin) {
     var $newPin = $("<div class='pin'>");
+    $newPin.data("id", pin.id);
     $newPin.css("background-image", "url(" + pin.url + ")");
-    $newPin.append($("<h3 class='title'>")
-      .text(pin.name)
-      .editable({
-        type: 'text',
-        pk: pin.id,
-        url: '/pins',
-        name: 'description',
-        showbuttons: false,
-        emptytext: 'Click here to add a description',
-        success: function() { console.log(status);}
-      })
+    $newPin.append($("<div class='title'>")
+      .append($("<h3>")
+        .text(pin.name)
+        .attr('contenteditable', true)
+      )
     );
     $newPin.append($("<div class='description'>")
       .append($("<p>")
         .text(pin.description)
-        .editable({
-          type: 'textarea',
-          pk: pin.id,
-          url: '/pins',
-          name: 'description',
-          emptytext: 'Click here to add a description',
-          success: function() { console.log(status);}
-        })
+        .attr('contenteditable', true)
+      )
+      .append($("<div class='controls'>")
+        .append($("<a class='myButton save'>")
+          .text("Save")
+        )
+        .append($("<a class='myButton cancel'>")
+          .text("Cancel")
+        )
       )
     );
     $grid.prepend($newPin).masonry( 'prepended', $newPin );
@@ -115,16 +108,33 @@ $(function() {
   })
 
   $content.on('click', '.pin', function(e) {
-    if($(this).hasClass('selected')) {
-
-    } else {
-    $('.selected').toggleClass("selected").children(".description, .title").slideToggle(250);
-    $(this).toggleClass("selected").children(".description, .title").slideToggle(250);
+    $('.selected').toggleClass("selected").children(".description, .title").removeClass("viewable");
+    $(this).toggleClass("selected").children(".description, .title").addClass("viewable");
     // $grid.masonry( 'unstamp', $('.pin') );
     // $grid.masonry( 'stamp', $(this) );
     $grid.masonry('layout');
-    }
+  });
+
+  $content.on('click', '.myButton.save', function(e) {
+    e.preventDefault();
+    var $pin = $(this).closest('.pin');
+    var id = $pin.data("id");
+    var title = $pin.find('h3').text();
+    var description = $pin.find('p').html();
+    console.log(title);
+    console.log(description);
+    console.log(id);
+
+    $.ajax({
+      type: "PUT",
+      url: "/pins",
+      data: { id: id, name: title, description: description }
+    })
+      .done(function( data ) {
+      console.log(data);
+      });
   })
+
 
   getBoards();
 });

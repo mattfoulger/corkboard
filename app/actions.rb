@@ -42,29 +42,23 @@ post '/pins' do
 end
 
 put '/pins' do
-  if params[:pk]
-    @pin = Pin.find(params[:pk])
-    field = params[:name]
-    value = params[:value]
-    case field
-    when "description"
-      @pin.description = value
-    when "board_id"
-      @pin.board_id = value
-    when "name"
-      @pin.name = value
-    when "url"
-      @pin.url = value
-    end
-    @pin.save!
-    return @pin.to_json
-  end
-
   @pin = Pin.find(params[:id])
-  @pin.name = params[:name]
-  @pin.description = params[:description]
-  @pin.board_id = params[:board_id]
-  @pin.url = params[:url]
+  params.each_pair do |key, value|
+    puts key
+    case key
+    when "name", "description", "board_id", "url"
+      puts value
+      @pin.update_attribute(key, value)
+    end
+  end
+  # if params[:name]
+  #   @pin.name = params[:name]
+  # end
+  # if params[:description]
+  #   @pin.description = params[:description]
+  # end
+  # @pin.board_id = params[:board_id]
+  # @pin.url = params[:url]
   @pin.save!
   @pin.to_json
 end
