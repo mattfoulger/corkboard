@@ -60,6 +60,7 @@ $(function() {
 
   function newPin(pin) {
     var $newPin = $("<div class='pin'>");
+    $newPin.data("original", pin);
     $newPin.data("id", pin.id);
     $newPin.css("background-image", "url(" + pin.url + ")");
     $newPin.append($("<div class='title'>")
@@ -70,10 +71,11 @@ $(function() {
     );
     $newPin.append($("<div class='description'>")
       .append($("<p>")
-        .text(pin.description)
+        .html(pin.description)
         .attr('contenteditable', true)
       )
       .append($("<div class='controls'>")
+        .waitSpinner()
         .append($("<a class='myButton save'>")
           .text("Save")
         )
@@ -107,24 +109,48 @@ $(function() {
     );
   })
 
+
   $content.on('click', '.pin', function(e) {
+    selectPin(this);
+  });
+
+  var selectPin = function(pin) {
     $('.selected').toggleClass("selected").children(".description, .title").removeClass("viewable");
-    $(this).toggleClass("selected").children(".description, .title").addClass("viewable");
-    // $grid.masonry( 'unstamp', $('.pin') );
-    // $grid.masonry( 'stamp', $(this) );
+    $(pin).toggleClass("selected").children(".description, .title").addClass("viewable");
     $grid.masonry('layout');
+  }
+
+  jQuery.fn.extend({
+    waitSpinner: function() {
+      return this.each(function() {
+        $(this).append($("<div class='sk-circle hidden'>")
+          .append($("<div class='sk-child sk-circle1'>"))
+          .append($("<div class='sk-child sk-circle2'>"))
+          .append($("<div class='sk-child sk-circle3'>"))
+          .append($("<div class='sk-child sk-circle4'>"))
+          .append($("<div class='sk-child sk-circle5'>"))
+          .append($("<div class='sk-child sk-circle6'>"))
+          .append($("<div class='sk-child sk-circle7'>"))
+          .append($("<div class='sk-child sk-circle8'>"))
+          .append($("<div class='sk-child sk-circle9'>"))
+          .append($("<div class='sk-child sk-circle10'>"))
+          .append($("<div class='sk-child sk-circle11'>"))
+          .append($("<div class='sk-child sk-circle12'>"))
+        );
+      });
+    }
   });
 
   $content.on('click', '.myButton.save', function(e) {
     e.preventDefault();
+    var spinner = $(this).siblings('.sk-circle');
+    spinner.toggleClass('hidden');
+
     var $pin = $(this).closest('.pin');
     var id = $pin.data("id");
     var title = $pin.find('h3').text();
     var description = $pin.find('p').html();
-    console.log(title);
-    console.log(description);
-    console.log(id);
-
+    
     $.ajax({
       type: "PUT",
       url: "/pins",
@@ -132,9 +158,18 @@ $(function() {
     })
       .done(function( data ) {
       console.log(data);
+      spinner.toggleClass('hidden');
       });
   })
 
+  $content.on('click', '.myButton.cancel', function(e) {
+    e.preventDefault();
+    var $pin = $(this).closest('.pin');
+    // replace title and description with content
+    // stored in data("original")
+    $pin.find('h3').text( $pin.data("original").name );
+    $pin.find('p').html( $pin.data("original").description );
+  });
 
   getBoards();
 });

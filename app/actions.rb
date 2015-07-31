@@ -51,14 +51,6 @@ put '/pins' do
       @pin.update_attribute(key, value)
     end
   end
-  # if params[:name]
-  #   @pin.name = params[:name]
-  # end
-  # if params[:description]
-  #   @pin.description = params[:description]
-  # end
-  # @pin.board_id = params[:board_id]
-  # @pin.url = params[:url]
   @pin.save!
   @pin.to_json
 end
